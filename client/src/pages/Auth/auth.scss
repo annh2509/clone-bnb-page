@@ -1,0 +1,26 @@
+.auth-modal {
+  .ant-modal-content {
+    padding: 24px 0;
+    .ant-modal-header {
+      .ant-modal-title {
+        display: flex;
+        justify-content: center;
+      }
+    }
+    .ant-modal-body {
+      .auth-form {
+        .ant-form-item {
+          margin-bottom: 0;
+          .ant-btn {
+            width: 100%;
+            background: #dd1263;
+          }
+        }
+      }
+    }
+    .ant-modal-close {
+      left: 12px;
+      top: 18px;
+    }
+  }
+}
