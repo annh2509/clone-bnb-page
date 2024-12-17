@@ -16,6 +16,26 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@common/*": [
+        "./src/common/*"
+      ],
+      "@config/*": [
+        "./src/configs/*"
+      ],
+      "@logger/*": [
+        "./src/modules/logger/*"
+      ],
+      "@user/*": [
+        "./src/modules/user/*"
+      ],
+      "@auth/*": [
+        "./src/modules/auth/*"
+      ],
+      "@homestay/*": [
+        "./src/modules/homestay/*"
+      ],
+    }
   }
 }
