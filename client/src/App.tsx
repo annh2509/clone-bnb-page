@@ -4,7 +4,7 @@ import MainRoutes from "./routes";
 
 const App = () => {
   return (
-    <div>
+    <div className="overflow-x-hidden">
       <Suspense
         fallback={
           <div className="flex justify-center items-center h-screen">
