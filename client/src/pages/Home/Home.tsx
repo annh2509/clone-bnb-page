@@ -36,7 +36,7 @@ const Home: React.FC = () => {
     <div className="px-12 pt-[180px] max-sm:pt-[118px] max-md:pt-[130px]">
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {map(data?.pages.flat(), (item) => (
-          <CardHomeStay item={item} key={item.id} />
+          <CardHomeStay homeStay={item} key={item.id} />
         ))}
 
         {isFetchingNextPage && <SkeletonLoader count={limit} />}

@@ -5,7 +5,7 @@ import { formatCurrency } from "../../utils/function";
 import { Link } from "react-router-dom";
 
 interface CardHomeStayProps {
-  item: {
+  homeStay: {
     id: number;
     location: string;
     desc: string;
@@ -17,11 +17,11 @@ interface CardHomeStayProps {
   };
 }
 
-const CardHomeStay: React.FC<CardHomeStayProps> = ({ item }) => {
+const CardHomeStay: React.FC<CardHomeStayProps> = ({ homeStay }) => {
   return (
     <div>
       <Link
-        to={`/rooms/${item.id}`}
+        to={`/rooms/${homeStay.id}`}
         target="_blank"
         rel="noopener noreferrer"
         className="w-full h-full relative"
@@ -52,7 +52,7 @@ const CardHomeStay: React.FC<CardHomeStayProps> = ({ item }) => {
           </div>
         </div>
         <Carousel arrows infinite={false}>
-          {map(item.images, (image) => (
+          {map(homeStay.images, (image) => (
             <div className="flex relative  cursor-pointer" key={image}>
               <img
                 src={image}
@@ -63,7 +63,7 @@ const CardHomeStay: React.FC<CardHomeStayProps> = ({ item }) => {
           ))}
         </Carousel>
         <div className="flex items-center justify-between cursor-pointer mt-3">
-          <span className="font-medium line-clamp-1">{item.location}</span>
+          <span className="font-medium line-clamp-1">{homeStay.location}</span>
           <div className="flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -83,17 +83,17 @@ const CardHomeStay: React.FC<CardHomeStayProps> = ({ item }) => {
                 d="m15.1 1.58-4.13 8.88-9.86 1.27a1 1 0 0 0-.54 1.74l7.3 6.57-1.97 9.85a1 1 0 0 0 1.48 1.06l8.62-5 8.63 5a1 1 0 0 0 1.48-1.06l-1.97-9.85 7.3-6.57a1 1 0 0 0-.55-1.73l-9.86-1.28-4.12-8.88a1 1 0 0 0-1.82 0z"
               ></path>
             </svg>
-            <span>{item.star}</span>
+            <span>{homeStay.star}</span>
           </div>
         </div>
         <div className="flex items-center gap-4 cursor-pointer text-[#6A6A6A]">
-          <span>{item.desc}</span>
+          <span>{homeStay.desc}</span>
         </div>
         <div className="cursor-pointer text-[#6A6A6A]">
-          <span>{item.date}</span>
+          <span>{homeStay.date}</span>
         </div>
         <div className="flex items-center gap-4">
-          <span className="font-medium">{formatCurrency(item.price)}</span>
+          <span className="font-medium">{formatCurrency(homeStay.price)}</span>
           <span>night</span>
         </div>
       </Link>
