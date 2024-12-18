@@ -1,45 +1,21 @@
-import { useState } from "react";
-import Auth from "./pages/Auth/Auth";
+import { Spin } from "antd";
+import { Suspense } from "react";
+import MainRoutes from "./routes";
 
-function App() {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [authType, setAuthType] = useState<string>("");
-
-  const showModal = (type: "login" | "signup") => {
-    setAuthType(type);
-    setIsModalOpen(true);
-  };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-    setAuthType("");
-  };
+const App = () => {
   return (
-    <section>
-      <h1
-        className="text-3xl text-red-600 font-bold underline"
-        onClick={() => showModal("login")}
+    <div className="overflow-x-hidden">
+      <Suspense
+        fallback={
+          <div className="flex justify-center items-center h-screen">
+            <Spin />
+          </div>
+        }
       >
-        Login
-      </h1>
-      <h1
-        className="text-3xl text-red-600 font-bold underline"
-        onClick={() => showModal("signup")}
-      >
-        Singup
-      </h1>
-      <Auth
-        isModalOpen={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        authType={authType}
-      />
-    </section>
+        <MainRoutes />
+      </Suspense>
+    </div>
   );
-}
+};
 
 export default App;
