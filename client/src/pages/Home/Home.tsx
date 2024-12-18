@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { map, size } from "lodash";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import homeStayApi from "../../api/homestay";
 import CardHomeStay from "../../components/CardHomeStay/CardHomeStay";
@@ -11,7 +11,7 @@ import SkeletonLoader from "./SkeletonLoader";
 const Home: React.FC = () => {
   const { search } = useQueryString();
   const { ref, inView } = useInView();
-  const [limit] = useState<number>(10);
+  const limit = 10;
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
