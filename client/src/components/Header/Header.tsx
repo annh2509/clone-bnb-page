@@ -35,19 +35,6 @@ const HeaderLayout: React.FC = () => {
   const items: MenuProps["items"] = user
     ? [
         {
-          key: "3",
-          label: "Logout",
-          onClick: async () => {
-            await authApi.logout();
-            navigate("/");
-            localStorage.removeItem("profile");
-            localStorage.removeItem("accessToken");
-          },
-        },
-        {
-          type: "divider",
-        },
-        {
           key: "4",
           label: "Gift cards",
         },
@@ -62,6 +49,19 @@ const HeaderLayout: React.FC = () => {
         {
           key: "7",
           label: "Help Center",
+        },
+        {
+          type: "divider",
+        },
+        {
+          key: "3",
+          label: "Logout",
+          onClick: async () => {
+            await authApi.logout();
+            navigate("/");
+            localStorage.removeItem("profile");
+            localStorage.removeItem("accessToken");
+          },
         },
       ]
     : [
