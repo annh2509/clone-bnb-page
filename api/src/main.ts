@@ -25,8 +25,7 @@ async function bootstrap() {
   app.use(urlencoded({ extended: true, limit: '150kb' }));
 
   app.enableCors({
-    allowedHeaders: '*',
-    origin: true,
+    origin: ['http://localhost:5173'],
     credentials: true,
   });
   app.use(cookieParser());

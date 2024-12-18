@@ -2,7 +2,7 @@ import { AuthService } from '@auth/auth.service';
 import { LoginDto, SignupDto } from '@auth/dto/auth.dto';
 import { JwtAuthGuard } from '@auth/guard/jwt-auth.guard';
 import { LocalAuthGuard } from '@auth/guard/local-auth.guard';
-import { IJwtAccessTokenPayload, IVerifyUser } from '@auth/interface/auth.interface';
+import { IVerifyUser } from '@auth/interface/auth.interface';
 import { IRequestAuth } from '@common/interface/common.interface';
 import { Body, Controller, Get, Post, Request, Res, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -37,7 +37,7 @@ export class AuthController {
 
   @Get('access-token')
   @ApiOperation({ summary: 'Refresh access token' })
-  accessToken(@Request() req) {
+  accessToken(@Request() req: any) {
     return this.authService.getAccessToken(req);
   }
 
