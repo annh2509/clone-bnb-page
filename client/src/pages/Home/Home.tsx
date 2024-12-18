@@ -5,8 +5,8 @@ import { useInView } from "react-intersection-observer";
 import homeStayApi from "../../api/homestay";
 import CardHomeStay from "../../components/CardHomeStay/CardHomeStay";
 import { useQueryString } from "../../hooks/useQueryString";
-import EmptyData from "./EmptyData";
-import SkeletonLoader from "./SkeletonLoader";
+import EmptyData from "./components/EmptyData";
+import SkeletonLoader from "./components/SkeletonLoader";
 
 const Home: React.FC = () => {
   const { search } = useQueryString();
