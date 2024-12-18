@@ -24,41 +24,36 @@ const CardHomeStay: React.FC<CardHomeStayProps> = ({ item }) => {
         to={`/rooms/${item.id}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-full h-full"
+        className="w-full h-full relative"
       >
+        <div>
+          <div className="absolute top-3 left-3 bg-white font-medium px-2 py-1 rounded-xl shadow-md z-10">
+            <span className="">Guest favorite</span>
+          </div>
+          <div className="absolute top-3 right-3 z-10">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 32 32"
+              aria-hidden="true"
+              role="presentation"
+              focusable="false"
+              style={{
+                display: "block",
+                fill: "rgba(0, 0, 0, 0.5)",
+                height: "24px",
+                width: "24px",
+                strokeWidth: "2",
+                overflow: "visible",
+                stroke: "#FFFFFF",
+              }}
+            >
+              <path d="M16 28c7-4.73 14-10 14-17a6.98 6.98 0 0 0-7-7c-1.8 0-3.58.68-4.95 2.05L16 8.1l-2.05-2.05a6.98 6.98 0 0 0-9.9 0A6.98 6.98 0 0 0 2 11c0 7 7 12.27 14 17z"></path>
+            </svg>
+          </div>
+        </div>
         <Carousel arrows infinite={false}>
           {map(item.images, (image) => (
             <div className="flex relative  cursor-pointer" key={image}>
-              <div className="absolute top-3 left-3 bg-white font-medium px-2 py-1 rounded-xl shadow-md">
-                <span className="">Guest favorite</span>
-              </div>
-              <div className="absolute top-3 right-3 ">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 32 32"
-                  aria-hidden="true"
-                  role="presentation"
-                  focusable="false"
-                  style={{
-                    display: "block",
-                    fill: "rgba(0, 0, 0, 0.5)",
-                    height: "24px",
-                    width: "24px",
-                    strokeWidth: "2",
-                    overflow: "visible",
-                    stroke: "#FFFFFF",
-                  }}
-                >
-                  <path d="M16 28c7-4.73 14-10 14-17a6.98 6.98 0 0 0-7-7c-1.8 0-3.58.68-4.95 2.05L16 8.1l-2.05-2.05a6.98 6.98 0 0 0-9.9 0A6.98 6.98 0 0 0 2 11c0 7 7 12.27 14 17z"></path>
-                </svg>
-              </div>
-              <div className="absolute bottom-3 left-3 bg-white font-medium p-4 rounded-tr-xl rounded-br-xl">
-                <img
-                  src={item.miniImage}
-                  className="w-10 h-10 object-cover rounded-full"
-                  alt=""
-                />
-              </div>
               <img
                 src={image}
                 alt=""
