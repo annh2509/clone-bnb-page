@@ -67,8 +67,8 @@ const CardHomeStay: React.FC<CardHomeStayProps> = ({ item }) => {
             </div>
           ))}
         </Carousel>
-        <div className="flex items-center justify-between cursor-pointer">
-          <span className="font-medium">{item.location}</span>
+        <div className="flex items-center justify-between cursor-pointer mt-3">
+          <span className="font-medium line-clamp-1">{item.location}</span>
           <div className="flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"

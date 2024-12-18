@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { map, size } from "lodash";
+import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import homeStayApi from "../../api/homestay";
 import CardHomeStay from "../../components/CardHomeStay/CardHomeStay";
 import { useQueryString } from "../../hooks/useQueryString";
-import SkeletonLoader from "./SkeletonLoader";
 import EmptyData from "./EmptyData";
+import SkeletonLoader from "./SkeletonLoader";
 
 const Home: React.FC = () => {
   const { search } = useQueryString();
   const { ref, inView } = useInView();
   const [limit] = useState<number>(10);
 
-  const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
       queryKey: ["homeStays", search],
       queryFn: ({ pageParam = 1 }) =>
@@ -34,9 +34,7 @@ const Home: React.FC = () => {
 
   return (
     <div className="px-12 pt-[180px] max-sm:pt-[118px] max-md:pt-[130px]">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {isLoading && <SkeletonLoader count={limit} />}
-
+      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {map(data?.pages.flat(), (item) => (
           <CardHomeStay item={item} key={item.id} />
         ))}
