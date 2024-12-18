@@ -2,7 +2,6 @@ import React from "react";
 import { Form, Input, Button } from "antd";
 import type { FormProps } from "antd";
 import { FieldTypeAuthForm } from "../types/auth";
-
 interface AuthFormProps {
   onFinish: FormProps<FieldTypeAuthForm>["onFinish"];
   onFinishFailed: FormProps<FieldTypeAuthForm>["onFinishFailed"];
@@ -14,8 +13,11 @@ const AuthForm: React.FC<AuthFormProps> = ({ onFinish, onFinishFailed }) => (
     size="large"
     onFinish={onFinish}
     onFinishFailed={onFinishFailed}
+    layout="vertical"
+    className="auth-form"
   >
     <Form.Item
+      label=" Phone number"
       name="phoneNumber"
       rules={[
         { required: true, message: "Please input your phone number!" },
@@ -25,6 +27,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onFinish, onFinishFailed }) => (
       <Input placeholder="Phone number" type="tel" />
     </Form.Item>
     <Form.Item
+      label="Password"
       name="password"
       rules={[
         { required: true, message: "Please input your password!" },

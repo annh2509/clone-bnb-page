@@ -10,7 +10,13 @@
     .ant-modal-body {
       .auth-form {
         .ant-form-item {
-          margin-bottom: 0;
+          margin-bottom: 12px;
+          .ant-form-item-row {
+            .ant-form-item-label {
+              padding-bottom: 0;
+            }
+          }
+
           .ant-btn {
             width: 100%;
             background: #dd1263;
