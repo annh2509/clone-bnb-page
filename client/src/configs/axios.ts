@@ -58,8 +58,10 @@ export const axiosInstanceWithToken = (token: string | null) => {
     async (config) => {
       try {
         if (config.headers) {
-          const decoded = decodeToken(token);
-          if (decoded && decoded.exp * 1000 < new Date().getTime()) {
+          const decodedToken = decodeToken(token);
+          const isTokenAvailable =
+            decodedToken && decodedToken.exp * 1000 < new Date().getTime();
+          if (isTokenAvailable) {
             const res = await authApi.getAccessToken();
             if (res) {
               const accessToken = (res as unknown as { accessToken: string })
