@@ -1,9 +1,13 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import BottomBar from "../../components/BottomBar/BottomBar";
 import FooterLayout from "../../components/Footer/Footer";
 import HeaderLayout from "../../components/Header/Header";
 
-const DefaultLayout = ({ children }: any) => {
+interface DefaultLayoutProps {
+  children: ReactNode;
+}
+
+const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
   const [isVisible, setIsVisible] = useState<boolean>(true);
   const [lastScrollY, setLastScrollY] = useState<number>(0);
 
