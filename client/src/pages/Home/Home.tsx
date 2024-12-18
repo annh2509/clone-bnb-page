@@ -1,167 +1,52 @@
-import { map } from "lodash";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { map, size } from "lodash";
+import { useInView } from "react-intersection-observer";
+import homeStayApi from "../../api/homestay";
 import CardHomeStay from "../../components/CardHomeStay/CardHomeStay";
+import { useQueryString } from "../../hooks/useQueryString";
+import SkeletonLoader from "./SkeletonLoader";
+import EmptyData from "./EmptyData";
 
-const data = [
-  {
-    id: 1,
-    location: "Nha Trang, Vietnam",
-    desc: "Ocean and sea views",
-    date: "Jan 6 - 11",
-    price: 1168933,
-    star: 4.5,
-    images: [
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/bd194e6d-43af-4342-b3ae-d09088d2afbb.jpeg?im_w=720&im_format=avif",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/4fcedaff-6486-4909-ae5f-eb9416c33493.jpeg?im_w=720&im_format=avif",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/147bc828-0613-43e4-8f57-8880d9467d33.jpeg?im_w=720&im_format=avif",
-    ],
-    miniImage:
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/bd194e6d-43af-4342-b3ae-d09088d2afbb.jpeg?im_w=720&im_format=avif",
-  },
-  {
-    id: 2,
-    location: "Nha Trang, Vietnam",
-    desc: "Ocean and sea views",
-    date: "Jan 6 - 11",
-    price: 1168933,
-    star: 4.5,
-    images: [
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/bd194e6d-43af-4342-b3ae-d09088d2afbb.jpeg?im_w=720&im_format=avif",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/4fcedaff-6486-4909-ae5f-eb9416c33493.jpeg?im_w=720&im_format=avif",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/147bc828-0613-43e4-8f57-8880d9467d33.jpeg?im_w=720&im_format=avif",
-    ],
-    miniImage:
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/bd194e6d-43af-4342-b3ae-d09088d2afbb.jpeg?im_w=720&im_format=avif",
-  },
-  {
-    id: 3,
-    location: "Nha Trang, Vietnam",
-    desc: "Ocean and sea views",
-    date: "Jan 6 - 11",
-    price: 1168933,
-    star: 4.5,
-    images: [
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/bd194e6d-43af-4342-b3ae-d09088d2afbb.jpeg?im_w=720&im_format=avif",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/4fcedaff-6486-4909-ae5f-eb9416c33493.jpeg?im_w=720&im_format=avif",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/147bc828-0613-43e4-8f57-8880d9467d33.jpeg?im_w=720&im_format=avif",
-    ],
-    miniImage:
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/bd194e6d-43af-4342-b3ae-d09088d2afbb.jpeg?im_w=720&im_format=avif",
-  },
-  {
-    id: 4,
-    location: "Nha Trang, Vietnam",
-    desc: "Ocean and sea views",
-    date: "Jan 6 - 11",
-    price: 1168933,
-    star: 4.5,
-    images: [
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/bd194e6d-43af-4342-b3ae-d09088d2afbb.jpeg?im_w=720&im_format=avif",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/4fcedaff-6486-4909-ae5f-eb9416c33493.jpeg?im_w=720&im_format=avif",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/147bc828-0613-43e4-8f57-8880d9467d33.jpeg?im_w=720&im_format=avif",
-    ],
-    miniImage:
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/bd194e6d-43af-4342-b3ae-d09088d2afbb.jpeg?im_w=720&im_format=avif",
-  },
-  {
-    id: 5,
-    location: "Nha Trang, Vietnam",
-    desc: "Ocean and sea views",
-    date: "Jan 6 - 11",
-    price: 1168933,
-    star: 4.5,
-    images: [
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/bd194e6d-43af-4342-b3ae-d09088d2afbb.jpeg?im_w=720&im_format=avif",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/4fcedaff-6486-4909-ae5f-eb9416c33493.jpeg?im_w=720&im_format=avif",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/147bc828-0613-43e4-8f57-8880d9467d33.jpeg?im_w=720&im_format=avif",
-    ],
-    miniImage:
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/bd194e6d-43af-4342-b3ae-d09088d2afbb.jpeg?im_w=720&im_format=avif",
-  },
-  {
-    id: 6,
-    location: "Nha Trang, Vietnam",
-    desc: "Ocean and sea views",
-    date: "Jan 6 - 11",
-    price: 1168933,
-    star: 4.5,
-    images: [
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/bd194e6d-43af-4342-b3ae-d09088d2afbb.jpeg?im_w=720&im_format=avif",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/4fcedaff-6486-4909-ae5f-eb9416c33493.jpeg?im_w=720&im_format=avif",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/147bc828-0613-43e4-8f57-8880d9467d33.jpeg?im_w=720&im_format=avif",
-    ],
-    miniImage:
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/bd194e6d-43af-4342-b3ae-d09088d2afbb.jpeg?im_w=720&im_format=avif",
-  },
-  {
-    id: 7,
-    location: "Nha Trang, Vietnam",
-    desc: "Ocean and sea views",
-    date: "Jan 6 - 11",
-    price: 1168933,
-    star: 4.5,
-    images: [
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/bd194e6d-43af-4342-b3ae-d09088d2afbb.jpeg?im_w=720&im_format=avif",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/4fcedaff-6486-4909-ae5f-eb9416c33493.jpeg?im_w=720&im_format=avif",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/147bc828-0613-43e4-8f57-8880d9467d33.jpeg?im_w=720&im_format=avif",
-    ],
-    miniImage:
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/bd194e6d-43af-4342-b3ae-d09088d2afbb.jpeg?im_w=720&im_format=avif",
-  },
-  {
-    id: 8,
-    location: "Nha Trang, Vietnam",
-    desc: "Ocean and sea views",
-    date: "Jan 6 - 11",
-    price: 1168933,
-    star: 4.5,
-    images: [
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/bd194e6d-43af-4342-b3ae-d09088d2afbb.jpeg?im_w=720&im_format=avif",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/4fcedaff-6486-4909-ae5f-eb9416c33493.jpeg?im_w=720&im_format=avif",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/147bc828-0613-43e4-8f57-8880d9467d33.jpeg?im_w=720&im_format=avif",
-    ],
-    miniImage:
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/bd194e6d-43af-4342-b3ae-d09088d2afbb.jpeg?im_w=720&im_format=avif",
-  },
-  {
-    id: 9,
-    location: "Nha Trang, Vietnam",
-    desc: "Ocean and sea views",
-    date: "Jan 6 - 11",
-    price: 1168933,
-    star: 4.5,
-    images: [
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/bd194e6d-43af-4342-b3ae-d09088d2afbb.jpeg?im_w=720&im_format=avif",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/4fcedaff-6486-4909-ae5f-eb9416c33493.jpeg?im_w=720&im_format=avif",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/147bc828-0613-43e4-8f57-8880d9467d33.jpeg?im_w=720&im_format=avif",
-    ],
-    miniImage:
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/bd194e6d-43af-4342-b3ae-d09088d2afbb.jpeg?im_w=720&im_format=avif",
-  },
-  {
-    id: 10,
-    location: "Nha Trang, Vietnam",
-    desc: "Ocean and sea views",
-    date: "Jan 6 - 11",
-    price: 1168933,
-    star: 4.5,
-    images: [
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/bd194e6d-43af-4342-b3ae-d09088d2afbb.jpeg?im_w=720&im_format=avif",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/4fcedaff-6486-4909-ae5f-eb9416c33493.jpeg?im_w=720&im_format=avif",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/147bc828-0613-43e4-8f57-8880d9467d33.jpeg?im_w=720&im_format=avif",
-    ],
-    miniImage:
-      "https://a0.muscache.com/im/pictures/miso/Hosting-31884678/original/bd194e6d-43af-4342-b3ae-d09088d2afbb.jpeg?im_w=720&im_format=avif",
-  },
-];
 const Home: React.FC = () => {
+  const { search } = useQueryString();
+  const { ref, inView } = useInView();
+  const [limit] = useState<number>(10);
+
+  const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ["homeStays", search],
+      queryFn: ({ pageParam = 1 }) =>
+        homeStayApi.getHomeStayList({ search, page: pageParam, limit }),
+      getNextPageParam: (lastPage, allPages) => {
+        if (lastPage.length >= limit) {
+          return allPages.length + 1;
+        }
+        return undefined;
+      },
+    });
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, hasNextPage, inView]);
+
   return (
-    <div className="px-12 pt-[180px] max-sm:pt-[118px] max-md:pt-[90px]">
+    <div className="px-12 pt-[180px] max-sm:pt-[118px] max-md:pt-[130px]">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {map(data, (item) => (
+        {isLoading && <SkeletonLoader count={limit} />}
+
+        {map(data?.pages.flat(), (item) => (
           <CardHomeStay item={item} key={item.id} />
         ))}
+
+        {isFetchingNextPage && <SkeletonLoader count={limit} />}
       </div>
+
+      {size(data?.pages.flat()) > 0 && <div ref={ref} className="h-10" />}
+
+      {size(data?.pages.flat()) === 0 && <EmptyData />}
     </div>
   );
 };
