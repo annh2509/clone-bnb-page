@@ -1,7 +1,18 @@
 import { CloseOutlined } from "@ant-design/icons";
-import { Button, Divider, Form, Input, Modal } from "antd";
+import { useMutation } from "@tanstack/react-query";
 import type { FormProps } from "antd";
+import { Divider, Form, message, Modal } from "antd";
+import { useNavigate } from "react-router-dom";
+import authApi from "../../api/auth";
 import "./auth.scss";
+import AuthForm from "./components/AuthForm";
+import {
+  AuthType,
+  FieldTypeAuthForm,
+  IAuth,
+  ILogin,
+  ISignup,
+} from "./types/auth";
 
 interface AuthProps {
   isModalOpen: boolean;
@@ -10,25 +21,81 @@ interface AuthProps {
   onCancel: () => void;
 }
 
-type FieldType = {
-  phoneNumber: string;
-  password: string;
-};
-
 const Auth: React.FC<AuthProps> = ({
   isModalOpen,
   onOk,
   onCancel,
   authType,
 }) => {
-  console.log("🚀 ~ authType:", authType);
   const [form] = Form.useForm();
-  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    console.log("Success:", values);
+  const navigate = useNavigate();
+
+  const loginMutate = useMutation({
+    mutationFn: (values: ILogin) => {
+      return authApi.login(values);
+    },
+    onError: () => {
+      message.error("Invalid phone number or password!");
+    },
+    onSuccess: (data) => {
+      message.success("Login successful!");
+      onCancel();
+      localStorage.setItem(
+        "accessToken",
+        (data as unknown as IAuth).accessToken
+      );
+      const user = {
+        id: (data as unknown as IAuth).user.id,
+        phone: (data as unknown as IAuth).user.phone,
+      };
+      localStorage.setItem("profile", JSON.stringify(user));
+      navigate("/", {
+        replace: true,
+      });
+    },
+  });
+
+  const signupMutate = useMutation({
+    mutationFn: (values: ISignup) => {
+      return authApi.signup(values);
+    },
+    onError: () => {
+      message.error("Invalid phone number or password!");
+    },
+    onSuccess: (data) => {
+      message.success("Signup successful!");
+      onCancel();
+      localStorage.setItem(
+        "accessToken",
+        (data as unknown as IAuth).accessToken
+      );
+      const user = {
+        id: (data as unknown as IAuth).user.id,
+        phone: (data as unknown as IAuth).user.phone,
+      };
+      localStorage.setItem("profile", JSON.stringify(user));
+      navigate("/", {
+        replace: true,
+      });
+    },
+  });
+
+  const onFinish: FormProps<FieldTypeAuthForm>["onFinish"] = (values) => {
+    if (authType === AuthType.LOGIN) {
+      loginMutate.mutate({
+        username: values.phoneNumber,
+        password: values.password,
+      });
+    } else if (authType === AuthType.SIGNUP) {
+      signupMutate.mutate({
+        phone: values.phoneNumber,
+        password: values.password,
+      });
+    }
     form.resetFields();
   };
 
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
+  const onFinishFailed: FormProps<FieldTypeAuthForm>["onFinishFailed"] = (
     errorInfo
   ) => {
     console.log("Failed:", errorInfo);
@@ -55,52 +122,7 @@ const Auth: React.FC<AuthProps> = ({
       <div className="px-[24px]">
         <h2 className="text-xl font-semibold">Welcome to Airbnb</h2>
         <div className="auth-form py-4">
-          <Form
-            name="login"
-            form={form}
-            size="large"
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-          >
-            <Form.Item
-              name="phoneNumber"
-              rules={[
-                { required: true, message: "Please input your phone number!" },
-                { pattern: /^[0-9]+$/, message: "Please input only numbers!" },
-              ]}
-            >
-              <Input placeholder="Phone number" type="tel" />
-            </Form.Item>
-            <Form.Item
-              name="password"
-              rules={[
-                { required: true, message: "Please input your password!" },
-                {
-                  min: 6,
-                  message: "Password must be at least 6 characters long!",
-                },
-              ]}
-            >
-              <Input.Password placeholder="Password" />
-            </Form.Item>
-            <span className="block py-2">
-              We’ll call or text you to confirm your number. Standard message
-              and data rates apply.{" "}
-              <a
-                target="_blank"
-                href="https://www.airbnb.com/help/article/2855"
-                className="underline font-medium"
-              >
-                Privacy Policy
-              </a>
-            </span>
-
-            <Form.Item>
-              <Button type="primary" htmlType="submit">
-                Continue
-              </Button>
-            </Form.Item>
-          </Form>
+          <AuthForm onFinish={onFinish} onFinishFailed={onFinishFailed} />
         </div>
       </div>
     </Modal>

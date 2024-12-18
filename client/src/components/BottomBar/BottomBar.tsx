@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import Auth from "../../pages/Auth/Auth";
+import authApi from "../../api/auth";
+import { useNavigate } from "react-router-dom";
+import { AuthType } from "../../pages/Auth/types/auth";
 
 interface BottomBarProps {
   isVisible: boolean;
@@ -8,8 +11,10 @@ interface BottomBarProps {
 const BottomBar: React.FC<BottomBarProps> = ({ isVisible }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [authType, setAuthType] = useState<string>("");
+  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("profile") as string);
 
-  const showModal = (type: "login" | "signup") => {
+  const showModal = (type: AuthType) => {
     setAuthType(type);
     setIsModalOpen(true);
   };
@@ -22,6 +27,14 @@ const BottomBar: React.FC<BottomBarProps> = ({ isVisible }) => {
     setIsModalOpen(false);
     setAuthType("");
   };
+
+  const handleLogout = async () => {
+    await authApi.logout();
+    navigate("/");
+    localStorage.removeItem("profile");
+    localStorage.removeItem("accessToken");
+  };
+
   return (
     <div>
       <div
@@ -31,12 +44,27 @@ const BottomBar: React.FC<BottomBarProps> = ({ isVisible }) => {
       >
         <div className="flex justify-center gap-8 py-4 text-sm font-light">
           <div className="cursor-pointer">Explore</div>
-          <div className="cursor-pointer" onClick={() => showModal("signup")}>
-            Sign up
-          </div>
-          <div className="cursor-pointer" onClick={() => showModal("login")}>
-            Log in
-          </div>
+          {!user && (
+            <div
+              className="cursor-pointer"
+              onClick={() => showModal(AuthType.SIGNUP)}
+            >
+              Sign up
+            </div>
+          )}
+          {!user && (
+            <div
+              className="cursor-pointer"
+              onClick={() => showModal(AuthType.LOGIN)}
+            >
+              Log in
+            </div>
+          )}
+          {user && (
+            <div className="cursor-pointer" onClick={handleLogout}>
+              Logout
+            </div>
+          )}
         </div>
       </div>
       {isModalOpen && (
