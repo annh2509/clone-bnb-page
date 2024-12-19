@@ -1,5 +1,5 @@
 import axiosInstance from "../configs/axios";
-import { IGetHomeStayList } from "../pages/Home/interface/home";
+import { IGetHomeStayList } from "../pages/Home/types/home";
 
 const homeStayApi = {
   async getHomeStayList(query: IGetHomeStayList) {

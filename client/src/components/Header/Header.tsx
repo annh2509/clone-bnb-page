@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import authApi from "../../api/auth";
 import Auth from "../../pages/Auth/Auth";
-import LeftSection from "./LeftSection/LeftSection";
-import RightSection from "./RightSection/RightSection";
+import LogoSection from "./LogoSection/LogoSection";
+import AccountActions from "./AccountActions/AccountActions";
 import HeaderSearch from "./Search/Search";
 import TabSelector from "./TabSelector/TabSelector";
 
@@ -32,7 +32,7 @@ const HeaderLayout: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const items: MenuProps["items"] = user
+  const menuItems: MenuProps["items"] = user
     ? [
         {
           key: "4",
@@ -128,13 +128,13 @@ const HeaderLayout: React.FC = () => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-white">
       <div>
         <div className="flex justify-between items-center px-12 py-4 max-sm:hidden max-md:hidden">
-          <LeftSection />
+          <LogoSection />
           <TabSelector
             tabs={tabHeader}
             activeTabId={activeTabId}
             onTabClick={handleTabClick}
           />
-          <RightSection items={items} />
+          <AccountActions menuItems={menuItems} />
         </div>
         <HeaderSearch />
       </div>
