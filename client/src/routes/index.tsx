@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import DefaultLayout from "../Layout/DefaultLayout";
 
 const Home = lazy(() => import("../pages/Home/Home"));
+const HomeStay = lazy(() => import("../pages/HomeStay/HomeStay"));
 
 interface TRoute {
   path: string;
@@ -16,6 +17,11 @@ const routes: TRoute[] = [
   {
     path: "/",
     element: Home,
+    layout: DefaultLayout,
+  },
+  {
+    path: "/rooms/:id",
+    element: HomeStay,
     layout: DefaultLayout,
   },
 ];

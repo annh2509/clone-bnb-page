@@ -1,5 +1,6 @@
 import React from "react";
 import FooterSection from "./FooterSection/FooterSection";
+import { useLocation } from "react-router-dom";
 
 const footerSections = [
   {
@@ -43,8 +44,16 @@ const footerSections = [
 ];
 
 const FooterLayout: React.FC = () => {
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
   return (
-    <footer className="px-12 py-4 mt-10 bg-[#F7F7F7]">
+    <footer
+      className={
+        isHomePage
+          ? `px-12 py-4 mt-10 bg-[#F7F7F7]`
+          : `px-12 py-4 mt-10 bg-[#F7F7F7] max-sm:mb-12 max-md:mb-12 max-lg:mb-12`
+      }
+    >
       <h2 className="text-2xl font-bold mb-2">
         Inspiration for future getaways
       </h2>
