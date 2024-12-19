@@ -1,6 +1,6 @@
 import { IQueryParams } from '@common/interface/common.interface';
 import { HomestayEntity } from '@homestay/entity/homestay.entity';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { getQueryParamsResult } from 'src/utils/pagination.utils';
 import { Repository } from 'typeorm';
@@ -33,6 +33,23 @@ export class HomestayService {
           limit,
           total: count,
         },
+        message: 'success',
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getHomeStayById(id: string) {
+    try {
+      const homestay = await this.homestayRepo.findOne({
+        where: { id },
+      });
+      if (!homestay) {
+        throw new NotFoundException('Homestay not found');
+      }
+      return {
+        data: homestay,
         message: 'success',
       };
     } catch (error) {
