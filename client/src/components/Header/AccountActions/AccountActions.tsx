@@ -4,11 +4,11 @@ import AccountIcon from "./icons/AccountIcon";
 import MenuIcon from "./icons/MenuIcon";
 import WorldIcon from "./icons/WorldIcon";
 
-interface RightSectionProps {
+interface AccountActionsProps {
   menuItems: MenuProps["items"];
 }
 
-const AccountActions: React.FC<RightSectionProps> = ({ menuItems }) => {
+const AccountActions: React.FC<AccountActionsProps> = ({ menuItems }) => {
   return (
     <div className="right">
       <div className="flex justify-center gap-4">
