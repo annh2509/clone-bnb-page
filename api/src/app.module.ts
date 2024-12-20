@@ -9,6 +9,8 @@ import { typeOrmAsyncConfig } from '@config/typeorm.config';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from '@auth/auth.module';
 import { HomestayModule } from '@homestay/homestay.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -28,8 +30,24 @@ import { HomestayModule } from '@homestay/homestay.module';
     }),
     AuthModule,
     HomestayModule,
+    ThrottlerModule.forRootAsync({
+      useFactory: (configService: ConfigService) => [
+        {
+          ttl: configService.get<number>('THROTTLE_TTL') * 60 * 1000,
+          limit: configService.get<number>('THROTTLE_LIMIT'),
+          blockDuration: configService.get<number>('THROTTLE_BLOCK_DURATION') * 60 * 1000,
+        },
+      ],
+      inject: [ConfigService],
+    }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}
